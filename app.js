@@ -55,35 +55,38 @@ function getFacilityById(id) {
 // ===================== SESSION =====================
 const SESSION_USER_KEY = 'ur_user';
 const SESSION_PAGE_KEY = 'ur_current_page';
-const LEGACY_CLEANUP_KEY = 'ur_legacy_cleanup';
+const ADMIN_PAGES = ['admin-overview','admin-pending','admin-all','admin-facilities'];
+const FACULTY_PAGES = ['dashboard','my-bookings','history','notifications'];
 
 function loadSessionUser() {
   try { return JSON.parse(sessionStorage.getItem(SESSION_USER_KEY) || 'null'); }
-  catch (error) { return null; }
+  catch (error) {
+    console.warn('Failed to parse session user from session storage.', error);
+    return null;
+  }
 }
 function saveSessionUser(user) { sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user)); }
 function clearSessionUser() { sessionStorage.removeItem(SESSION_USER_KEY); }
 function loadSessionPage() { return sessionStorage.getItem(SESSION_PAGE_KEY) || ''; }
 function saveSessionPage(page) { sessionStorage.setItem(SESSION_PAGE_KEY, page); }
 function clearSessionPage() { sessionStorage.removeItem(SESSION_PAGE_KEY); }
+function getDefaultPage(role) { return role==='admin' ? 'admin-pending' : 'dashboard'; }
+function normalizePageForRole(page, role) {
+  const defaultPage = getDefaultPage(role);
+  if (!page) return defaultPage;
+  if (role==='admin') return ADMIN_PAGES.includes(page) ? page : defaultPage;
+  return FACULTY_PAGES.includes(page) ? page : defaultPage;
+}
 
 // ===================== STATE =====================
 let currentUser = loadSessionUser();
 let currentPage = 'login';
 if (currentUser) {
-  const defaultPage = currentUser.role==='admin'?'admin-pending':'dashboard';
   const storedPage = loadSessionPage();
-  currentPage = storedPage || defaultPage;
-  const isAdminPage = currentPage.startsWith('admin-');
-  if (currentUser.role==='admin' && !isAdminPage) currentPage = defaultPage;
-  if (currentUser.role!=='admin' && isAdminPage) currentPage = defaultPage;
+  currentPage = normalizePageForRole(storedPage, currentUser.role);
   saveSessionPage(currentPage);
 } else {
   clearSessionPage();
-}
-if (!localStorage.getItem(LEGACY_CLEANUP_KEY)) {
-  localStorage.removeItem('ur_user');
-  localStorage.setItem(LEGACY_CLEANUP_KEY, '1');
 }
 let bookingFilter = 'all';
 let adminFilter = 'pending';
@@ -136,7 +139,7 @@ function loginAs(role) {
     avatar: role==='admin'?'admin_panel_settings':'school'
   };
   saveSessionUser(currentUser);
-  currentPage = role==='admin'?'admin-pending':'dashboard';
+  currentPage = getDefaultPage(role);
   saveSessionPage(currentPage);
   render(); showToast(`Welcome back, ${currentUser.name.split(' ').slice(-1)[0]}!`,'success');
 }
@@ -1658,6 +1661,11 @@ function deleteFacility(facilityId) {
 function render() {
   const app = document.getElementById('app');
   if (!currentUser) { clearSessionPage(); app.innerHTML = renderLogin(); return; }
+  const normalizedPage = normalizePageForRole(currentPage, currentUser.role);
+  if (normalizedPage !== currentPage) {
+    currentPage = normalizedPage;
+    saveSessionPage(currentPage);
+  }
 
   if (currentUser.role==='admin') {
     const topTitles = {'admin-overview':'Overview','admin-pending':'Pending Requests','admin-all':'All Bookings','admin-facilities':'Facilities'};
@@ -1666,7 +1674,7 @@ function render() {
     else if (currentPage==='admin-pending') content = renderAdminPending();
     else if (currentPage==='admin-all') content = renderAdminAll();
     else if (currentPage==='admin-facilities') content = renderAdminFacilities();
-    else { currentPage='admin-pending'; saveSessionPage(currentPage); content=renderAdminPending(); }
+    else { currentPage=getDefaultPage(currentUser.role); saveSessionPage(currentPage); content=renderAdminPending(); }
 
     app.innerHTML = `
     <div class="flex h-screen overflow-hidden bg-[#F7F2F9]">
@@ -1694,7 +1702,7 @@ function render() {
   else if (currentPage==='my-bookings') content = renderMyBookings(false);
   else if (currentPage==='history') content = renderMyBookings(true);
   else if (currentPage==='notifications') content = renderNotifications();
-  else { currentPage='dashboard'; saveSessionPage(currentPage); content=renderDashboard(); }
+  else { currentPage=getDefaultPage(currentUser.role); saveSessionPage(currentPage); content=renderDashboard(); }
 
   app.innerHTML = `
   <div class="flex h-screen overflow-hidden bg-[#FCF8FF]">
