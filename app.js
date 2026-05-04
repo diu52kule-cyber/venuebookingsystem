@@ -53,15 +53,15 @@ function getFacilityById(id) {
 }
 
 // ===================== SESSION =====================
-const SESSION_USER_KEY = 'ur_user';
-const SESSION_PAGE_KEY = 'ur_current_page';
+const SESSION_USER_KEY = 'ur_session_user';
+const SESSION_PAGE_KEY = 'ur_session_page';
 const ADMIN_PAGES = ['admin-overview','admin-pending','admin-all','admin-facilities'];
 const FACULTY_PAGES = ['dashboard','my-bookings','history','notifications'];
 
 function loadSessionUser() {
   try { return JSON.parse(sessionStorage.getItem(SESSION_USER_KEY) || 'null'); }
   catch (error) {
-    console.warn('Failed to parse session user from session storage.', error);
+    console.warn('Failed to parse session user data.', error);
     return null;
   }
 }
@@ -77,14 +77,17 @@ function normalizePageForRole(page, role) {
   if (role==='admin') return ADMIN_PAGES.includes(page) ? page : defaultPage;
   return FACULTY_PAGES.includes(page) ? page : defaultPage;
 }
+function setPageForRole(page, role) {
+  currentPage = normalizePageForRole(page, role);
+  saveSessionPage(currentPage);
+}
 
 // ===================== STATE =====================
 let currentUser = loadSessionUser();
 let currentPage = 'login';
 if (currentUser) {
   const storedPage = loadSessionPage();
-  currentPage = normalizePageForRole(storedPage, currentUser.role);
-  saveSessionPage(currentPage);
+  setPageForRole(storedPage, currentUser.role);
 } else {
   clearSessionPage();
 }
@@ -1661,11 +1664,7 @@ function deleteFacility(facilityId) {
 function render() {
   const app = document.getElementById('app');
   if (!currentUser) { clearSessionPage(); app.innerHTML = renderLogin(); return; }
-  const normalizedPage = normalizePageForRole(currentPage, currentUser.role);
-  if (normalizedPage !== currentPage) {
-    currentPage = normalizedPage;
-    saveSessionPage(currentPage);
-  }
+  setPageForRole(currentPage, currentUser.role);
 
   if (currentUser.role==='admin') {
     const topTitles = {'admin-overview':'Overview','admin-pending':'Pending Requests','admin-all':'All Bookings','admin-facilities':'Facilities'};
