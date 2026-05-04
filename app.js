@@ -55,6 +55,7 @@ function getFacilityById(id) {
 // ===================== SESSION =====================
 const SESSION_USER_KEY = 'ur_user';
 const SESSION_PAGE_KEY = 'ur_current_page';
+const LEGACY_CLEANUP_KEY = 'ur_legacy_cleanup';
 
 function loadSessionUser() {
   try { return JSON.parse(sessionStorage.getItem(SESSION_USER_KEY) || 'null'); }
@@ -74,12 +75,16 @@ if (currentUser) {
   const storedPage = loadSessionPage();
   currentPage = storedPage || defaultPage;
   const isAdminPage = currentPage.startsWith('admin-');
-  if ((currentUser.role==='admin') !== isAdminPage) currentPage = defaultPage;
+  if (currentUser.role==='admin' && !isAdminPage) currentPage = defaultPage;
+  if (currentUser.role!=='admin' && isAdminPage) currentPage = defaultPage;
   saveSessionPage(currentPage);
 } else {
   clearSessionPage();
 }
-localStorage.removeItem('ur_user');
+if (!sessionStorage.getItem(LEGACY_CLEANUP_KEY)) {
+  localStorage.removeItem('ur_user');
+  sessionStorage.setItem(LEGACY_CLEANUP_KEY, '1');
+}
 let bookingFilter = 'all';
 let adminFilter = 'pending';
 
