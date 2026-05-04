@@ -52,9 +52,45 @@ function getFacilityById(id) {
   return getAllFacilities().find(f=>f.id===id);
 }
 
+// ===================== SESSION =====================
+const SESSION_USER_KEY = 'ur_session_user';
+const SESSION_PAGE_KEY = 'ur_session_page';
+const ADMIN_PAGES = ['admin-overview','admin-pending','admin-all','admin-facilities'];
+const FACULTY_PAGES = ['dashboard','my-bookings','history','notifications'];
+
+function loadSessionUser() {
+  try { return JSON.parse(sessionStorage.getItem(SESSION_USER_KEY) || 'null'); }
+  catch (error) {
+    console.warn('Failed to parse session user data.', error);
+    return null;
+  }
+}
+function saveSessionUser(user) { sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user)); }
+function clearSessionUser() { sessionStorage.removeItem(SESSION_USER_KEY); }
+function loadSessionPage() { return sessionStorage.getItem(SESSION_PAGE_KEY) || ''; }
+function saveSessionPage(page) { sessionStorage.setItem(SESSION_PAGE_KEY, page); }
+function clearSessionPage() { sessionStorage.removeItem(SESSION_PAGE_KEY); }
+function getDefaultPage(role) { return role==='admin' ? 'admin-pending' : 'dashboard'; }
+function normalizePageForRole(page, role) {
+  const defaultPage = getDefaultPage(role);
+  if (!page) return defaultPage;
+  if (role==='admin') return ADMIN_PAGES.includes(page) ? page : defaultPage;
+  return FACULTY_PAGES.includes(page) ? page : defaultPage;
+}
+function setPageForRole(page, role) {
+  currentPage = normalizePageForRole(page, role);
+  saveSessionPage(currentPage);
+}
+
 // ===================== STATE =====================
-let currentUser = JSON.parse(localStorage.getItem('ur_user') || 'null');
-let currentPage = currentUser ? (currentUser.role==='admin'?'admin-pending':'dashboard') : 'login';
+let currentUser = loadSessionUser();
+let currentPage = 'login';
+if (currentUser) {
+  const storedPage = loadSessionPage();
+  setPageForRole(storedPage, currentUser.role);
+} else {
+  clearSessionPage();
+}
 let bookingFilter = 'all';
 let adminFilter = 'pending';
 
@@ -105,13 +141,18 @@ function loginAs(role) {
     dept: role==='admin'?'Administration':'Senior Faculty',
     avatar: role==='admin'?'admin_panel_settings':'school'
   };
-  localStorage.setItem('ur_user', JSON.stringify(currentUser));
-  currentPage = role==='admin'?'admin-pending':'dashboard';
+  saveSessionUser(currentUser);
+  currentPage = getDefaultPage(role);
+  saveSessionPage(currentPage);
   render(); showToast(`Welcome back, ${currentUser.name.split(' ').slice(-1)[0]}!`,'success');
 }
 
 function logout() {
-  currentUser = null; localStorage.removeItem('ur_user'); currentPage='login'; render();
+  currentUser = null;
+  clearSessionUser();
+  clearSessionPage();
+  currentPage = 'login';
+  render();
 }
 
 function fillDemo(role) {
@@ -542,7 +583,7 @@ function formatDate(d) {
   try { return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}); } catch(e){return d;}
 }
 
-function navigate(page) { currentPage=page; render(); window.scrollTo(0,0); }
+function navigate(page) { currentPage=page; saveSessionPage(currentPage); render(); window.scrollTo(0,0); }
 
 // ===================== RENDER: LOGIN =====================
 function renderLogin() {
@@ -1622,7 +1663,8 @@ function deleteFacility(facilityId) {
 // ===================== MAIN RENDER =====================
 function render() {
   const app = document.getElementById('app');
-  if (!currentUser) { app.innerHTML = renderLogin(); return; }
+  if (!currentUser) { clearSessionPage(); app.innerHTML = renderLogin(); return; }
+  setPageForRole(currentPage, currentUser.role);
 
   if (currentUser.role==='admin') {
     const topTitles = {'admin-overview':'Overview','admin-pending':'Pending Requests','admin-all':'All Bookings','admin-facilities':'Facilities'};
@@ -1631,7 +1673,7 @@ function render() {
     else if (currentPage==='admin-pending') content = renderAdminPending();
     else if (currentPage==='admin-all') content = renderAdminAll();
     else if (currentPage==='admin-facilities') content = renderAdminFacilities();
-    else { currentPage='admin-pending'; content=renderAdminPending(); }
+    else { currentPage=getDefaultPage(currentUser.role); saveSessionPage(currentPage); content=renderAdminPending(); }
 
     app.innerHTML = `
     <div class="flex h-screen overflow-hidden bg-[#F7F2F9]">
@@ -1659,7 +1701,7 @@ function render() {
   else if (currentPage==='my-bookings') content = renderMyBookings(false);
   else if (currentPage==='history') content = renderMyBookings(true);
   else if (currentPage==='notifications') content = renderNotifications();
-  else { currentPage='dashboard'; content=renderDashboard(); }
+  else { currentPage=getDefaultPage(currentUser.role); saveSessionPage(currentPage); content=renderDashboard(); }
 
   app.innerHTML = `
   <div class="flex h-screen overflow-hidden bg-[#FCF8FF]">
