@@ -59,7 +59,7 @@ const LEGACY_CLEANUP_KEY = 'ur_legacy_cleanup';
 
 function loadSessionUser() {
   try { return JSON.parse(sessionStorage.getItem(SESSION_USER_KEY) || 'null'); }
-  catch (_) { return null; }
+  catch (error) { return null; }
 }
 function saveSessionUser(user) { sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user)); }
 function clearSessionUser() { sessionStorage.removeItem(SESSION_USER_KEY); }
@@ -81,9 +81,9 @@ if (currentUser) {
 } else {
   clearSessionPage();
 }
-if (!sessionStorage.getItem(LEGACY_CLEANUP_KEY)) {
+if (!localStorage.getItem(LEGACY_CLEANUP_KEY)) {
   localStorage.removeItem('ur_user');
-  sessionStorage.setItem(LEGACY_CLEANUP_KEY, '1');
+  localStorage.setItem(LEGACY_CLEANUP_KEY, '1');
 }
 let bookingFilter = 'all';
 let adminFilter = 'pending';
