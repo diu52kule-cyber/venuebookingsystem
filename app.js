@@ -58,7 +58,7 @@ const SESSION_PAGE_KEY = 'ur_current_page';
 
 function loadSessionUser() {
   try { return JSON.parse(sessionStorage.getItem(SESSION_USER_KEY) || 'null'); }
-  catch { return null; }
+  catch (_) { return null; }
 }
 function saveSessionUser(user) { sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user)); }
 function clearSessionUser() { sessionStorage.removeItem(SESSION_USER_KEY); }
@@ -74,8 +74,7 @@ if (currentUser) {
   const storedPage = loadSessionPage();
   currentPage = storedPage || defaultPage;
   const isAdminPage = currentPage.startsWith('admin-');
-  if (currentUser.role==='admin' && !isAdminPage) currentPage = defaultPage;
-  if (currentUser.role!=='admin' && isAdminPage) currentPage = defaultPage;
+  if ((currentUser.role==='admin') !== isAdminPage) currentPage = defaultPage;
   saveSessionPage(currentPage);
 } else {
   clearSessionPage();
@@ -138,7 +137,11 @@ function loginAs(role) {
 }
 
 function logout() {
-  currentUser = null; clearSessionUser(); clearSessionPage(); currentPage='login'; render();
+  currentUser = null;
+  clearSessionUser();
+  clearSessionPage();
+  currentPage = 'login';
+  render();
 }
 
 function fillDemo(role) {
