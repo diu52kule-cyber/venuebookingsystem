@@ -596,8 +596,8 @@ function renderLogin() {
       <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-white/5 blur-3xl"></div>
       <div class="relative z-10">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center">
-            <span class="material-symbols-outlined text-white text-2xl">account_balance</span>
+          <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center p-1.5 shadow-md">
+            <img src="assets/svpcet-logo.svg" alt="St. Vincent Pallotti logo" class="w-full h-full object-contain"/>
           </div>
           <span class="text-3xl font-black text-white">St. Vincent Pallotti</span>
         </div>
@@ -628,8 +628,8 @@ function renderLogin() {
     <div class="flex-1 flex items-center justify-center p-8">
       <div class="w-full max-w-sm fade-up">
         <div class="lg:hidden flex items-center gap-3 mb-10">
-          <div class="w-10 h-10 bg-[#2B54C2] rounded-xl flex items-center justify-center">
-            <span class="material-symbols-outlined text-white">account_balance</span>
+          <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 shadow-sm">
+            <img src="assets/svpcet-logo.svg" alt="St. Vincent Pallotti logo" class="w-full h-full object-contain"/>
           </div>
           <span class="text-2xl font-black text-[#20419A]">St. Vincent Pallotti</span>
         </div>
@@ -690,8 +690,8 @@ function renderSidebar(activeNav) {
   <aside class="h-screen w-64 fixed left-0 top-0 bg-[#F7F2F9] flex flex-col p-4 gap-1 z-40">
     <div class="flex flex-col mb-6 px-2 pt-2">
       <div class="flex items-center gap-3 mb-1">
-        <div class="w-10 h-10 bg-gradient-to-br from-[#20419A] to-[#2B54C2] rounded-xl flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-xl">account_balance</span>
+        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 shadow-sm">
+          <img src="assets/svpcet-logo.svg" alt="St. Vincent Pallotti logo" class="w-full h-full object-contain"/>
         </div>
         <span class="text-lg font-black text-[#20419A]">St. Vincent Pallotti</span>
       </div>
@@ -1029,8 +1029,8 @@ function renderAdminSidebar(active) {
   <aside class="h-screen w-64 fixed left-0 top-0 bg-[#1C1B20] flex flex-col p-4 gap-1 z-40">
     <div class="flex flex-col mb-6 px-2 pt-2">
       <div class="flex items-center gap-3 mb-1">
-        <div class="w-10 h-10 bg-gradient-to-br from-[#20419A] to-[#2B54C2] rounded-xl flex items-center justify-center">
-          <span class="material-symbols-outlined text-white text-xl">admin_panel_settings</span>
+        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center p-1 shadow-sm">
+          <img src="assets/svpcet-logo.svg" alt="St. Vincent Pallotti logo" class="w-full h-full object-contain"/>
         </div>
         <span class="text-lg font-black text-white">St. Vincent Pallotti</span>
       </div>
