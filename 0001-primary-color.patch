@@ -1,0 +1,630 @@
+From ab1867991b8722f7af68296b7869d4efed58dfe0 Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.com>
+Date: Mon, 27 Jul 2026 12:50:27 +0000
+Subject: [PATCH] Update primary brand color to #20419A
+
+Replaced the purple accent palette (#534A92, #6C63AC, #463d83, #e5deff, #c8bfff and derived rgba shadows) across app.js and styles.css with a blue palette derived from #20419A as the new primary color, preserving existing lightness/tint relationships for gradients, tints, and shadow accents.
+---
+ app.js     | 162 ++++++++++++++++++++++++++---------------------------
+ styles.css |   4 +-
+ 2 files changed, 83 insertions(+), 83 deletions(-)
+
+diff --git a/app.js b/app.js
+index 1877459..b131769 100644
+--- a/app.js
++++ b/app.js
+@@ -171,7 +171,7 @@ function openVenueList() {
+   document.getElementById('modal-overlay').innerHTML = `
+   <div class="fixed inset-0 bg-[#1C1B20]/60 backdrop-blur-sm flex items-center justify-center p-4 fade-in" onclick="handleOverlayClick(event)">
+     <div class="bg-[#FCF8FF] rounded-3xl shadow-2xl w-full max-w-md scale-in overflow-hidden" onclick="event.stopPropagation()">
+-      <div class="bg-gradient-to-br from-[#534A92] to-[#6C63AC] p-6 text-white">
++      <div class="bg-gradient-to-br from-[#20419A] to-[#2B54C2] p-6 text-white">
+         <div class="flex justify-between items-center">
+           <div>
+             <h2 class="text-2xl font-black">Book a Facility</h2>
+@@ -186,20 +186,20 @@ function openVenueList() {
+         ${grouped.map(g => g.items.length ? `
+         <div>
+           <div class="flex items-center gap-2 px-2 mb-2">
+-            <span class="material-symbols-outlined text-[#6C63AC] text-lg">${g.icon}</span>
++            <span class="material-symbols-outlined text-[#2B54C2] text-lg">${g.icon}</span>
+             <p class="text-xs font-black text-[#787581] uppercase tracking-widest">${g.label}</p>
+           </div>
+           <div class="space-y-2">
+             ${g.items.map(f => `
+-            <button onclick="openBooking('${f.id}')" class="w-full flex items-center gap-4 bg-white hover:bg-[#F7F2F9] border-2 border-transparent hover:border-[#6C63AC]/20 rounded-2xl p-4 text-left transition-all group">
+-              <div class="w-10 h-10 bg-[#e5deff] rounded-xl flex items-center justify-center flex-shrink-0">
+-                <span class="material-symbols-outlined text-[#534A92] text-lg">${g.icon}</span>
++            <button onclick="openBooking('${f.id}')" class="w-full flex items-center gap-4 bg-white hover:bg-[#F7F2F9] border-2 border-transparent hover:border-[#2B54C2]/20 rounded-2xl p-4 text-left transition-all group">
++              <div class="w-10 h-10 bg-[#BCCEFF] rounded-xl flex items-center justify-center flex-shrink-0">
++                <span class="material-symbols-outlined text-[#20419A] text-lg">${g.icon}</span>
+               </div>
+               <div class="flex-1 min-w-0">
+                 <p class="font-black text-[#1c1b20] text-sm">${f.name}</p>
+                 <p class="text-xs text-[#787581] font-medium">${f.room}${f.capacity?' · '+f.capacity+' seats':''}</p>
+               </div>
+-              <span class="material-symbols-outlined text-[#c9c4d2] group-hover:text-[#6C63AC] transition-colors">chevron_right</span>
++              <span class="material-symbols-outlined text-[#c9c4d2] group-hover:text-[#2B54C2] transition-colors">chevron_right</span>
+             </button>`).join('')}
+           </div>
+         </div>` : '').join('')}
+@@ -256,7 +256,7 @@ function openBooking(facilityId) {
+   <div class="fixed inset-0 bg-[#1C1B20]/60 backdrop-blur-sm flex items-center justify-center p-4 fade-in" onclick="handleOverlayClick(event)">
+     <div class="bg-[#FCF8FF] rounded-3xl shadow-2xl w-full scale-in overflow-hidden flex flex-col" style="max-width:900px;max-height:92vh" onclick="event.stopPropagation()">
+       <!-- Header -->
+-      <div class="bg-gradient-to-br from-[#534A92] to-[#6C63AC] p-5 text-white flex-shrink-0">
++      <div class="bg-gradient-to-br from-[#20419A] to-[#2B54C2] p-5 text-white flex-shrink-0">
+         <div class="flex justify-between items-start">
+           <div>
+             <span class="text-xs font-black uppercase tracking-widest text-white/60">${f.typeName}</span>
+@@ -315,7 +315,7 @@ function openBooking(facilityId) {
+           </div>` : ''}
+           <div class="flex gap-3 pt-1">
+             <button onclick="closeModal()" class="flex-1 py-3 rounded-full bg-[#E5E1E8] text-[#474550] font-bold text-sm hover:bg-[#c9c4d2] transition-colors">Cancel</button>
+-            <button onclick="submitBooking('${facilityId}')" class="flex-1 py-3 rounded-full bg-gradient-to-br from-[#534A92] to-[#6C63AC] text-white font-black text-sm shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-1.5">
++            <button onclick="submitBooking('${facilityId}')" class="flex-1 py-3 rounded-full bg-gradient-to-br from-[#20419A] to-[#2B54C2] text-white font-black text-sm shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-1.5">
+               <span class="material-symbols-outlined text-sm">send</span> Submit
+             </button>
+           </div>
+@@ -385,8 +385,8 @@ function buildTimetable(facilityId, dateStr) {
+           const dayNum = dateObj.getDate();
+           const mon = dateObj.toLocaleDateString('en-IN',{month:'short'});
+           return `<th style="text-align:center;padding:4px 2px">
+-            <div style="font-size:10px;font-weight:800;color:${isSelected?'#534A92':'#787581'};text-transform:uppercase;letter-spacing:.05em">${DAY_LABELS[i]}</div>
+-            <div style="font-size:11px;font-weight:900;color:${isSelected?'#534A92':'#1c1b20'};background:${isSelected?'#e5deff':'transparent'};border-radius:6px;padding:2px 4px">${dayNum} ${mon}</div>
++            <div style="font-size:10px;font-weight:800;color:${isSelected?'#20419A':'#787581'};text-transform:uppercase;letter-spacing:.05em">${DAY_LABELS[i]}</div>
++            <div style="font-size:11px;font-weight:900;color:${isSelected?'#20419A':'#1c1b20'};background:${isSelected?'#BCCEFF':'transparent'};border-radius:6px;padding:2px 4px">${dayNum} ${mon}</div>
+           </th>`;
+         }).join('')}
+       </tr>
+@@ -484,7 +484,7 @@ function toggleBookingAmenity(id) {
+     btn.style.borderColor='#e5e1e8'; btn.style.background='white'; btn.style.color='#787581';
+   } else {
+     _bookingAmenities.add(id);
+-    btn.style.borderColor='#6C63AC'; btn.style.background='#e5deff'; btn.style.color='#534A92';
++    btn.style.borderColor='#2B54C2'; btn.style.background='#BCCEFF'; btn.style.color='#20419A';
+   }
+ }
+ 
+@@ -561,7 +561,7 @@ function rejectBooking(id) {
+ 
+ // ===================== TOAST =====================
+ function showToast(msg, type='info') {
+-  const colors={success:'bg-green-500',error:'bg-red-500',info:'bg-[#534A92]',warning:'bg-amber-500'};
++  const colors={success:'bg-green-500',error:'bg-red-500',info:'bg-[#20419A]',warning:'bg-amber-500'};
+   const icons={success:'check_circle',error:'error',info:'info',warning:'warning'};
+   const tc=document.getElementById('toast-container');
+   const t=document.createElement('div');
+@@ -590,7 +590,7 @@ function renderLogin() {
+   return `
+   <div class="min-h-screen flex bg-[#FCF8FF] overflow-hidden">
+     <!-- Left decorative panel -->
+-    <div class="hidden lg:flex flex-col justify-between w-[45%] bg-gradient-to-br from-[#534A92] via-[#6C63AC] to-[#463d83] p-14 relative overflow-hidden">
++    <div class="hidden lg:flex flex-col justify-between w-[45%] bg-gradient-to-br from-[#20419A] via-[#2B54C2] to-[#183686] p-14 relative overflow-hidden">
+       <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(circle at 20% 80%, #fff 1px, transparent 1px),radial-gradient(circle at 80% 20%, #fff 1px, transparent 1px),radial-gradient(circle at 50% 50%, #fff 0.5px, transparent 0.5px);background-size:60px 60px,80px 80px,40px 40px;"></div>
+       <div class="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
+       <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-white/5 blur-3xl"></div>
+@@ -628,10 +628,10 @@ function renderLogin() {
+     <div class="flex-1 flex items-center justify-center p-8">
+       <div class="w-full max-w-sm fade-up">
+         <div class="lg:hidden flex items-center gap-3 mb-10">
+-          <div class="w-10 h-10 bg-[#6C63AC] rounded-xl flex items-center justify-center">
++          <div class="w-10 h-10 bg-[#2B54C2] rounded-xl flex items-center justify-center">
+             <span class="material-symbols-outlined text-white">account_balance</span>
+           </div>
+-          <span class="text-2xl font-black text-[#534A92]">St. Vincent Pallotti</span>
++          <span class="text-2xl font-black text-[#20419A]">St. Vincent Pallotti</span>
+         </div>
+         <h1 class="text-3xl font-black text-[#1c1b20] mb-2">Welcome back</h1>
+         <p class="text-[#787581] mb-8">Sign in to book campus facilities</p>
+@@ -648,7 +648,7 @@ function renderLogin() {
+         </div>
+         
+         <div class="space-y-3 mb-6">
+-          <button onclick="loginAs('faculty')" class="w-full py-4 rounded-2xl bg-gradient-to-br from-[#534A92] to-[#6C63AC] text-white font-black text-base shadow-lg hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2">
++          <button onclick="loginAs('faculty')" class="w-full py-4 rounded-2xl bg-gradient-to-br from-[#20419A] to-[#2B54C2] text-white font-black text-base shadow-lg hover:brightness-110 active:scale-98 transition-all flex items-center justify-center gap-2">
+             <span class="material-symbols-outlined">school</span> Sign In as Faculty
+           </button>
+           <button onclick="loginAs('admin')" class="w-full py-4 rounded-2xl bg-[#1c1b20] text-white font-black text-base hover:bg-[#2d2c33] active:scale-98 transition-all flex items-center justify-center gap-2">
+@@ -660,12 +660,12 @@ function renderLogin() {
+           <p class="text-xs font-bold text-[#474550] uppercase tracking-wider mb-3">Demo Credentials</p>
+           <div class="grid grid-cols-2 gap-2">
+             <button onclick="fillDemo('faculty')" class="text-left p-3 bg-white rounded-xl hover:bg-[#e5e1e8] transition-colors">
+-              <p class="text-xs font-black text-[#534A92]">Faculty</p>
++              <p class="text-xs font-black text-[#20419A]">Faculty</p>
+               <p class="text-[10px] text-[#787581] mt-0.5">faculty@university.edu</p>
+               <p class="text-[10px] text-[#787581]">Pass: faculty123</p>
+             </button>
+             <button onclick="fillDemo('admin')" class="text-left p-3 bg-white rounded-xl hover:bg-[#e5e1e8] transition-colors">
+-              <p class="text-xs font-black text-[#534A92]">Admin</p>
++              <p class="text-xs font-black text-[#20419A]">Admin</p>
+               <p class="text-[10px] text-[#787581] mt-0.5">admin@university.edu</p>
+               <p class="text-[10px] text-[#787581]">Pass: admin123</p>
+             </button>
+@@ -690,17 +690,17 @@ function renderSidebar(activeNav) {
+   <aside class="h-screen w-64 fixed left-0 top-0 bg-[#F7F2F9] flex flex-col p-4 gap-1 z-40">
+     <div class="flex flex-col mb-6 px-2 pt-2">
+       <div class="flex items-center gap-3 mb-1">
+-        <div class="w-10 h-10 bg-gradient-to-br from-[#534A92] to-[#6C63AC] rounded-xl flex items-center justify-center">
++        <div class="w-10 h-10 bg-gradient-to-br from-[#20419A] to-[#2B54C2] rounded-xl flex items-center justify-center">
+           <span class="material-symbols-outlined text-white text-xl">account_balance</span>
+         </div>
+-        <span class="text-lg font-black text-[#534A92]">St. Vincent Pallotti</span>
++        <span class="text-lg font-black text-[#20419A]">St. Vincent Pallotti</span>
+       </div>
+       <p class="text-[10px] text-[#787581] font-bold uppercase tracking-widest ml-[52px]">Facility Portal</p>
+     </div>
+     <nav class="flex-1 flex flex-col gap-1">
+       ${navItems.map(n=>{
+         const active = activeNav===n.page;
+-        return `<button onclick="navigate('${n.page}')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-full font-semibold text-sm w-full text-left ${active?'bg-[#6C63AC] text-white shadow-[0px_4px_12px_rgba(83,74,146,0.25)]':'text-[#49454F] hover:bg-[#E5E1E8]'} transition-all relative">
++        return `<button onclick="navigate('${n.page}')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-full font-semibold text-sm w-full text-left ${active?'bg-[#2B54C2] text-white shadow-[0px_4px_12px_rgba(32,65,154,0.25)]':'text-[#49454F] hover:bg-[#E5E1E8]'} transition-all relative">
+           <span class="material-symbols-outlined text-xl">${n.icon}</span>
+           <span>${n.label}</span>
+           ${n.page==='my-bookings'&&pendingCount>0?`<span class="ml-auto bg-amber-400 text-white text-[9px] font-black rounded-full w-5 h-5 flex items-center justify-center">${pendingCount}</span>`:''}
+@@ -709,7 +709,7 @@ function renderSidebar(activeNav) {
+     </nav>
+     <div class="border-t border-[#E5E1E8] pt-4 mb-2">
+       <div class="flex items-center gap-3 px-3 mb-3">
+-        <div class="w-9 h-9 bg-[#6C63AC] rounded-full flex items-center justify-center">
++        <div class="w-9 h-9 bg-[#2B54C2] rounded-full flex items-center justify-center">
+           <span class="material-symbols-outlined text-white text-lg">person</span>
+         </div>
+         <div class="min-w-0">
+@@ -721,7 +721,7 @@ function renderSidebar(activeNav) {
+         <span class="material-symbols-outlined text-xl">logout</span><span>Sign Out</span>
+       </button>
+     </div>
+-    <button onclick="openVenueList()" class="bg-gradient-to-br from-[#534A92] to-[#6C63AC] text-white py-4 px-6 rounded-2xl flex items-center justify-center gap-2 font-black text-sm shadow-lg hover:brightness-110 transition-all">
++    <button onclick="openVenueList()" class="bg-gradient-to-br from-[#20419A] to-[#2B54C2] text-white py-4 px-6 rounded-2xl flex items-center justify-center gap-2 font-black text-sm shadow-lg hover:brightness-110 transition-all">
+       <span class="material-symbols-outlined">add_circle</span> Book New Facility
+     </button>
+   </aside>`;
+@@ -731,7 +731,7 @@ function renderSidebar(activeNav) {
+ function renderTopBar(title) {
+   const today = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+   return `
+-  <header class="bg-[#FCF8FF]/90 backdrop-blur-md sticky top-0 z-30 flex justify-between items-center px-8 py-4 shadow-[0px_4px_20px_rgba(83,74,146,0.06)]">
++  <header class="bg-[#FCF8FF]/90 backdrop-blur-md sticky top-0 z-30 flex justify-between items-center px-8 py-4 shadow-[0px_4px_20px_rgba(32,65,154,0.06)]">
+     <h1 class="text-2xl font-black text-[#1c1b20]">${title}</h1>
+     <div class="flex items-center gap-4">
+       <div class="relative hidden md:block">
+@@ -740,14 +740,14 @@ function renderTopBar(title) {
+       </div>
+       <button class="relative w-10 h-10 rounded-full bg-[#F7F2F9] hover:bg-[#E5E1E8] flex items-center justify-center transition-colors">
+         <span class="material-symbols-outlined text-[#474550]">notifications</span>
+-        <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#6C63AC] rounded-full border-2 border-white"></span>
++        <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-[#2B54C2] rounded-full border-2 border-white"></span>
+       </button>
+       <div class="flex items-center gap-3 pl-3 border-l border-[#E5E1E8]">
+         <div class="text-right hidden md:block">
+           <p class="text-sm font-bold text-[#1c1b20]">${currentUser.name}</p>
+           <p class="text-[10px] text-[#787581] uppercase font-bold">${currentUser.dept}</p>
+         </div>
+-        <div class="w-10 h-10 bg-gradient-to-br from-[#534A92] to-[#6C63AC] rounded-full flex items-center justify-center">
++        <div class="w-10 h-10 bg-gradient-to-br from-[#20419A] to-[#2B54C2] rounded-full flex items-center justify-center">
+           <span class="material-symbols-outlined text-white">person</span>
+         </div>
+       </div>
+@@ -759,21 +759,21 @@ function renderTopBar(title) {
+ function hallCard(h, idx=0) {
+   const img = h.image || '';
+   return `
+-  <div class="hall-card bg-white rounded-2xl overflow-hidden flex-shrink-0 w-56 shadow-[0px_4px_20px_rgba(83,74,146,0.07)] cursor-pointer fade-up" style="animation-delay:${idx*60}ms">
+-    ${img ? `<div class="h-32 overflow-hidden"><img src="${img}" alt="${h.name}" class="w-full h-full object-cover"/></div>` : `<div class="h-32 bg-gradient-to-br from-[#e5deff] to-[#c8bfff] flex items-center justify-center"><span class="material-symbols-outlined text-[#534A92] text-4xl">meeting_room</span></div>`}
++  <div class="hall-card bg-white rounded-2xl overflow-hidden flex-shrink-0 w-56 shadow-[0px_4px_20px_rgba(32,65,154,0.07)] cursor-pointer fade-up" style="animation-delay:${idx*60}ms">
++    ${img ? `<div class="h-32 overflow-hidden"><img src="${img}" alt="${h.name}" class="w-full h-full object-cover"/></div>` : `<div class="h-32 bg-gradient-to-br from-[#BCCEFF] to-[#9DB8FF] flex items-center justify-center"><span class="material-symbols-outlined text-[#20419A] text-4xl">meeting_room</span></div>`}
+     <div class="p-4">
+       <div class="flex items-start justify-between mb-2">
+-        <span class="text-[10px] font-black uppercase tracking-wider text-[#534A92] bg-[#e5deff] px-2.5 py-1 rounded-full">${h.room}</span>
++        <span class="text-[10px] font-black uppercase tracking-wider text-[#20419A] bg-[#BCCEFF] px-2.5 py-1 rounded-full">${h.room}</span>
+       </div>
+       <h4 class="font-black text-[#1c1b20] text-base mb-1">${h.name}</h4>
+       <p class="text-[#787581] text-xs leading-relaxed mb-3">${h.desc||''}</p>
+       <div class="flex items-center gap-2 flex-wrap mb-3">
+         ${(h.amenities||h.features||[]).slice(0,4).map(f=>`<div class="flex flex-col items-center gap-0.5" title="${f.label}">
+-          <span class="material-symbols-outlined text-[#534A92]" style="font-size:15px">${f.icon}</span>
++          <span class="material-symbols-outlined text-[#20419A]" style="font-size:15px">${f.icon}</span>
+         </div>`).join('')}
+       </div>
+       ${h.available!==false
+-        ? `<button onclick="openBooking('${h.id}')" class="w-full py-2.5 rounded-full bg-[#F7F2F9] hover:bg-[#6C63AC] hover:text-white text-[#534A92] font-black text-xs transition-all">Book</button>`
++        ? `<button onclick="openBooking('${h.id}')" class="w-full py-2.5 rounded-full bg-[#F7F2F9] hover:bg-[#2B54C2] hover:text-white text-[#20419A] font-black text-xs transition-all">Book</button>`
+         : `<button disabled class="w-full py-2.5 rounded-full bg-[#E5E1E8] text-[#787581] font-black text-xs cursor-not-allowed opacity-60">Unavailable</button>`
+       }
+     </div>
+@@ -787,10 +787,10 @@ function audiCard(a) {
+   <div class="audi-card group relative bg-surface-container rounded-3xl overflow-hidden h-72 shadow-lg cursor-pointer" style="animation:fadeUp .5s ease both">
+     ${a.image
+       ? `<img src="${a.image}" alt="${a.name}" class="w-full h-full object-cover"/>`
+-      : `<div class="w-full h-full bg-gradient-to-br from-[#534A92] to-[#6C63AC] flex items-center justify-center"><span class="material-symbols-outlined text-white/30" style="font-size:80px">theater_comedy</span></div>`
++      : `<div class="w-full h-full bg-gradient-to-br from-[#20419A] to-[#2B54C2] flex items-center justify-center"><span class="material-symbols-outlined text-white/30" style="font-size:80px">theater_comedy</span></div>`
+     }
+     <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent p-5 flex flex-col justify-end">
+-      <p class="text-[10px] font-black uppercase tracking-widest text-[#e5deff] mb-1">${a.room}</p>
++      <p class="text-[10px] font-black uppercase tracking-widest text-[#BCCEFF] mb-1">${a.room}</p>
+       <div class="flex justify-between items-end">
+         <div>
+           <h4 class="text-white text-lg font-black leading-tight">${a.name}</h4>
+@@ -804,7 +804,7 @@ function audiCard(a) {
+           <span class="text-white/50 text-[8px] uppercase font-bold">Seats</span>
+         </div>`:''}
+       </div>
+-      <button class="audi-book-btn mt-3 w-full bg-gradient-to-r from-[#534A92] to-[#6C63AC] text-white py-2.5 rounded-xl font-black text-sm" onclick="openBooking('${a.id}')">Book Venue</button>
++      <button class="audi-book-btn mt-3 w-full bg-gradient-to-r from-[#20419A] to-[#2B54C2] text-white py-2.5 rounded-xl font-black text-sm" onclick="openBooking('${a.id}')">Book Venue</button>
+     </div>
+   </div>`;
+ }
+@@ -827,11 +827,11 @@ function renderDashboard() {
+     ${myBks.length>0?`
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+       ${[
+-        {label:'Total Requests',val:myBks.length,icon:'bookmark',color:'text-[#534A92]',bg:'bg-[#e5deff]'},
++        {label:'Total Requests',val:myBks.length,icon:'bookmark',color:'text-[#20419A]',bg:'bg-[#BCCEFF]'},
+         {label:'Pending',val:pending,icon:'schedule',color:'text-amber-600',bg:'bg-amber-100'},
+         {label:'Approved',val:approved,icon:'check_circle',color:'text-emerald-600',bg:'bg-emerald-100'},
+-        {label:'This Month',val:myBks.filter(b=>new Date(b.createdAt).getMonth()===new Date().getMonth()).length,icon:'calendar_month',color:'text-[#6C63AC]',bg:'bg-[#e5deff]'},
+-      ].map(s=>`<div class="bg-white rounded-2xl p-4 shadow-[0px_4px_16px_rgba(83,74,146,0.06)]">
++        {label:'This Month',val:myBks.filter(b=>new Date(b.createdAt).getMonth()===new Date().getMonth()).length,icon:'calendar_month',color:'text-[#2B54C2]',bg:'bg-[#BCCEFF]'},
++      ].map(s=>`<div class="bg-white rounded-2xl p-4 shadow-[0px_4px_16px_rgba(32,65,154,0.06)]">
+         <div class="flex items-center justify-between mb-3">
+           <span class="text-xs font-bold text-[#787581] uppercase tracking-wider">${s.label}</span>
+           <div class="w-8 h-8 ${s.bg} rounded-xl flex items-center justify-center">
+@@ -850,7 +850,7 @@ function renderDashboard() {
+           <h3 class="text-xl font-black text-[#1c1b20]">Conference Halls</h3>
+           <p class="text-sm text-[#787581] mt-0.5">Professional spaces for focused collaboration</p>
+         </div>
+-        <span class="text-xs font-black uppercase tracking-wider text-[#534A92]">${confHalls.length} Space${confHalls.length!==1?'s':''}</span>
++        <span class="text-xs font-black uppercase tracking-wider text-[#20419A]">${confHalls.length} Space${confHalls.length!==1?'s':''}</span>
+       </div>
+       <div class="overflow-x-auto pb-2">
+         <div class="flex gap-4" style="width:max-content">
+@@ -867,7 +867,7 @@ function renderDashboard() {
+           <h3 class="text-xl font-black text-[#1c1b20]">Auditoriums</h3>
+           <p class="text-sm text-[#787581] mt-0.5">Large-scale venues for significant events</p>
+         </div>
+-        <span class="text-xs font-black uppercase tracking-wider text-[#534A92]">${auditoriums.length} Venue${auditoriums.length!==1?'s':''}</span>
++        <span class="text-xs font-black uppercase tracking-wider text-[#20419A]">${auditoriums.length} Venue${auditoriums.length!==1?'s':''}</span>
+       </div>
+       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+         ${auditoriums.map(a=>audiCard(a)).join('')}
+@@ -878,7 +878,7 @@ function renderDashboard() {
+     ${mfcList.map(mfc=>`
+     <section class="bg-[#F7F2F9] rounded-3xl p-8 md:p-10 flex flex-col md:flex-row gap-8 items-center fade-up">
+       <div class="flex-1 space-y-5">
+-        <div class="inline-flex items-center gap-2 bg-[#534A92]/10 text-[#534A92] px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest">
++        <div class="inline-flex items-center gap-2 bg-[#20419A]/10 text-[#20419A] px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest">
+           <span class="material-symbols-outlined text-sm">stars</span> Premium Venue
+         </div>
+         <div>
+@@ -888,12 +888,12 @@ function renderDashboard() {
+         <p class="text-[#474550] leading-relaxed">${mfc.desc||''}</p>
+         <div class="grid grid-cols-4 gap-3">
+           ${(mfc.amenities||mfc.features||[]).map(f=>`<div class="flex flex-col items-center p-3 bg-white rounded-2xl shadow-sm">
+-            <span class="material-symbols-outlined text-[#6C63AC] text-2xl mb-1">${f.icon}</span>
++            <span class="material-symbols-outlined text-[#2B54C2] text-2xl mb-1">${f.icon}</span>
+             <span class="text-[9px] font-black text-[#787581] uppercase text-center">${f.label}</span>
+           </div>`).join('')}
+         </div>
+         <div class="flex items-center gap-3">
+-          <button onclick="openBooking('${mfc.id}')" class="bg-gradient-to-br from-[#534A92] to-[#6C63AC] text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-lg hover:brightness-110 transition-all flex items-center gap-2">
++          <button onclick="openBooking('${mfc.id}')" class="bg-gradient-to-br from-[#20419A] to-[#2B54C2] text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-lg hover:brightness-110 transition-all flex items-center gap-2">
+             Check Availability <span class="material-symbols-outlined text-lg">event_note</span>
+           </button>
+           ${mfc.capacity?`<div class="text-xs text-[#787581]"><p class="font-bold">${mfc.capacity.toLocaleString()} Seats</p><p>Max Capacity</p></div>`:''}
+@@ -945,7 +945,7 @@ function renderMyBookings(forHistory=false) {
+     </div>
+     ${tabs?`
+     <div class="flex gap-2 mb-6 overflow-x-auto pb-1">
+-      ${tabs.map(([v,l])=>`<button onclick="bookingFilter='${v}';navigate('my-bookings')" class="flex-shrink-0 px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all ${bookingFilter===v?'bg-[#6C63AC] text-white shadow-md':'bg-[#F7F2F9] text-[#474550] hover:bg-[#E5E1E8]'}">${l}</button>`).join('')}
++      ${tabs.map(([v,l])=>`<button onclick="bookingFilter='${v}';navigate('my-bookings')" class="flex-shrink-0 px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all ${bookingFilter===v?'bg-[#2B54C2] text-white shadow-md':'bg-[#F7F2F9] text-[#474550] hover:bg-[#E5E1E8]'}">${l}</button>`).join('')}
+     </div>`:''}
+     ${bks.length===0?`
+     <div class="flex flex-col items-center justify-center py-20 text-center">
+@@ -954,20 +954,20 @@ function renderMyBookings(forHistory=false) {
+       </div>
+       <p class="font-black text-[#1c1b20] text-lg">No bookings found</p>
+       <p class="text-[#787581] text-sm mt-1">Your booking requests will appear here</p>
+-      <button onclick="navigate('dashboard')" class="mt-6 bg-[#6C63AC] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-110 transition-all">Browse Facilities</button>
++      <button onclick="navigate('dashboard')" class="mt-6 bg-[#2B54C2] text-white px-6 py-2.5 rounded-full font-bold text-sm hover:brightness-110 transition-all">Browse Facilities</button>
+     </div>`:`
+     <div class="space-y-4">
+       ${bks.map(b=>`
+-      <div class="bg-white rounded-2xl p-5 shadow-[0px_4px_16px_rgba(83,74,146,0.06)] fade-up">
++      <div class="bg-white rounded-2xl p-5 shadow-[0px_4px_16px_rgba(32,65,154,0.06)] fade-up">
+         <div class="flex items-start justify-between gap-4">
+           <div class="flex items-start gap-4 flex-1 min-w-0">
+             <div class="w-11 h-11 bg-[#F7F2F9] rounded-xl flex items-center justify-center flex-shrink-0">
+-              <span class="material-symbols-outlined text-[#6C63AC] text-xl">${b.typeName==='Auditorium'?'theater_comedy':b.typeName==='Multi Facility Center'?'domain':b.typeName==='Special Permission'?'key':'meeting_room'}</span>
++              <span class="material-symbols-outlined text-[#2B54C2] text-xl">${b.typeName==='Auditorium'?'theater_comedy':b.typeName==='Multi Facility Center'?'domain':b.typeName==='Special Permission'?'key':'meeting_room'}</span>
+             </div>
+             <div class="min-w-0 flex-1">
+               <div class="flex items-center gap-2 flex-wrap">
+                 <p class="font-black text-[#1c1b20]">${b.facilityName}</p>
+-                <span class="text-[9px] font-black uppercase tracking-wider text-[#534A92] bg-[#e5deff] px-2 py-0.5 rounded-full">${b.room}</span>
++                <span class="text-[9px] font-black uppercase tracking-wider text-[#20419A] bg-[#BCCEFF] px-2 py-0.5 rounded-full">${b.room}</span>
+               </div>
+               <p class="text-sm text-[#474550] mt-0.5 font-medium truncate">${b.purpose}</p>
+               <div class="flex items-center gap-4 mt-2 flex-wrap">
+@@ -1002,7 +1002,7 @@ function renderNotifications() {
+     <h2 class="text-2xl font-black text-[#1c1b20] mb-6">Notifications</h2>
+     ${notifs.length===0?`<div class="flex flex-col items-center py-20 text-center"><span class="material-symbols-outlined text-[#c9c4d2] text-5xl mb-3">notifications_off</span><p class="font-bold text-[#787581]">No notifications yet</p></div>`:
+     `<div class="space-y-3">
+-      ${notifs.map(n=>`<div class="bg-white rounded-2xl p-4 shadow-[0px_4px_16px_rgba(83,74,146,0.05)] flex items-start gap-4">
++      ${notifs.map(n=>`<div class="bg-white rounded-2xl p-4 shadow-[0px_4px_16px_rgba(32,65,154,0.05)] flex items-start gap-4">
+         <div class="w-10 h-10 ${n.bg} rounded-xl flex items-center justify-center flex-shrink-0">
+           <span class="material-symbols-outlined ${n.color} text-xl">${n.icon}</span>
+         </div>
+@@ -1029,7 +1029,7 @@ function renderAdminSidebar(active) {
+   <aside class="h-screen w-64 fixed left-0 top-0 bg-[#1C1B20] flex flex-col p-4 gap-1 z-40">
+     <div class="flex flex-col mb-6 px-2 pt-2">
+       <div class="flex items-center gap-3 mb-1">
+-        <div class="w-10 h-10 bg-gradient-to-br from-[#534A92] to-[#6C63AC] rounded-xl flex items-center justify-center">
++        <div class="w-10 h-10 bg-gradient-to-br from-[#20419A] to-[#2B54C2] rounded-xl flex items-center justify-center">
+           <span class="material-symbols-outlined text-white text-xl">admin_panel_settings</span>
+         </div>
+         <span class="text-lg font-black text-white">St. Vincent Pallotti</span>
+@@ -1039,7 +1039,7 @@ function renderAdminSidebar(active) {
+     <nav class="flex-1 flex flex-col gap-1">
+       ${navItems.map(n=>{
+         const a=active===n.page;
+-        return `<button onclick="navigate('${n.page}')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-full font-semibold text-sm w-full text-left ${a?'bg-[#534A92] text-white shadow-lg':'text-white/50 hover:bg-white/10 hover:text-white'} transition-all relative">
++        return `<button onclick="navigate('${n.page}')" class="nav-item flex items-center gap-3 px-4 py-3 rounded-full font-semibold text-sm w-full text-left ${a?'bg-[#20419A] text-white shadow-lg':'text-white/50 hover:bg-white/10 hover:text-white'} transition-all relative">
+           <span class="material-symbols-outlined text-xl">${n.icon}</span>
+           <span>${n.label}</span>
+           ${n.badge>0?`<span class="ml-auto bg-amber-400 text-white text-[9px] font-black rounded-full min-w-5 h-5 flex items-center justify-center px-1">${n.badge}</span>`:''}
+@@ -1048,7 +1048,7 @@ function renderAdminSidebar(active) {
+     </nav>
+     <div class="border-t border-white/10 pt-4 mb-2">
+       <div class="flex items-center gap-3 px-3 mb-3">
+-        <div class="w-9 h-9 bg-[#534A92] rounded-full flex items-center justify-center">
++        <div class="w-9 h-9 bg-[#20419A] rounded-full flex items-center justify-center">
+           <span class="material-symbols-outlined text-white text-lg">admin_panel_settings</span>
+         </div>
+         <div>
+@@ -1072,11 +1072,11 @@ function renderAdminOverview() {
+   <div class="p-8 fade-up">
+     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+       ${[
+-        {l:'Total Bookings',v:counts.total,i:'bookmark',c:'text-[#534A92]',bg:'bg-[#e5deff]'},
++        {l:'Total Bookings',v:counts.total,i:'bookmark',c:'text-[#20419A]',bg:'bg-[#BCCEFF]'},
+         {l:'Pending',v:counts.pending,i:'pending_actions',c:'text-amber-600',bg:'bg-amber-100'},
+         {l:'Approved',v:counts.approved,i:'check_circle',c:'text-emerald-600',bg:'bg-emerald-100'},
+         {l:'Rejected',v:counts.rejected,i:'cancel',c:'text-red-500',bg:'bg-red-100'},
+-      ].map(s=>`<div class="bg-white rounded-2xl p-5 shadow-[0px_4px_16px_rgba(83,74,146,0.06)]">
++      ].map(s=>`<div class="bg-white rounded-2xl p-5 shadow-[0px_4px_16px_rgba(32,65,154,0.06)]">
+         <div class="flex items-center justify-between mb-3">
+           <span class="text-xs font-bold text-[#787581] uppercase tracking-wider">${s.l}</span>
+           <div class="w-9 h-9 ${s.bg} rounded-xl flex items-center justify-center">
+@@ -1086,10 +1086,10 @@ function renderAdminOverview() {
+         <p class="text-4xl font-black ${s.c}">${s.v}</p>
+       </div>`).join('')}
+     </div>
+-    <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(83,74,146,0.06)] overflow-hidden">
++    <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(32,65,154,0.06)] overflow-hidden">
+       <div class="p-5 border-b border-[#F7F2F9] flex items-center justify-between">
+         <h3 class="font-black text-[#1c1b20]">Recent Requests</h3>
+-        <button onclick="navigate('admin-all')" class="text-xs font-bold text-[#534A92] hover:underline">View All</button>
++        <button onclick="navigate('admin-all')" class="text-xs font-bold text-[#20419A] hover:underline">View All</button>
+       </div>
+       ${adminBookingRows(recent)}
+     </div>
+@@ -1103,14 +1103,14 @@ function adminBookingRows(bks) {
+     ${bks.map(b=>`
+     <div class="p-5 flex items-start gap-4 hover:bg-[#FCF8FF] transition-colors">
+       <div class="w-10 h-10 bg-[#F7F2F9] rounded-xl flex items-center justify-center flex-shrink-0">
+-        <span class="material-symbols-outlined text-[#6C63AC] text-lg">${b.typeName==='Auditorium'?'theater_comedy':b.typeName==='Multi Facility Center'?'domain':b.typeName==='Special Permission'?'key':'meeting_room'}</span>
++        <span class="material-symbols-outlined text-[#2B54C2] text-lg">${b.typeName==='Auditorium'?'theater_comedy':b.typeName==='Multi Facility Center'?'domain':b.typeName==='Special Permission'?'key':'meeting_room'}</span>
+       </div>
+       <div class="flex-1 min-w-0">
+         <div class="flex items-start justify-between gap-3">
+           <div class="min-w-0">
+             <div class="flex items-center gap-2 flex-wrap">
+               <p class="font-black text-[#1c1b20] text-sm">${b.facilityName}</p>
+-              <span class="text-[9px] font-black text-[#534A92] bg-[#e5deff] px-2 py-0.5 rounded-full uppercase tracking-wide">${b.room}</span>
++              <span class="text-[9px] font-black text-[#20419A] bg-[#BCCEFF] px-2 py-0.5 rounded-full uppercase tracking-wide">${b.room}</span>
+             </div>
+             <p class="text-sm text-[#474550] mt-0.5 font-medium truncate">${b.purpose}</p>
+             <div class="flex items-center gap-3 mt-1.5 flex-wrap">
+@@ -1153,7 +1153,7 @@ function renderAdminPending() {
+         <span class="material-symbols-outlined" style="font-size:14px">schedule</span>${bks.length} Pending
+       </div>`:''}
+     </div>
+-    <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(83,74,146,0.06)] overflow-hidden">
++    <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(32,65,154,0.06)] overflow-hidden">
+       ${adminBookingRows(bks)}
+     </div>
+   </div>`;
+@@ -1169,10 +1169,10 @@ function renderAdminAll() {
+     <div class="flex items-center justify-between mb-6">
+       <h2 class="text-2xl font-black text-[#1c1b20]">All Bookings</h2>
+       <div class="flex gap-2">
+-        ${['all','pending','approved','rejected'].map(f=>`<button onclick="adminFilter='${f}';navigate('admin-all')" class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all ${adminFilter===f?'bg-[#534A92] text-white':'bg-[#F7F2F9] text-[#474550] hover:bg-[#E5E1E8]'}">${f}</button>`).join('')}
++        ${['all','pending','approved','rejected'].map(f=>`<button onclick="adminFilter='${f}';navigate('admin-all')" class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-wider transition-all ${adminFilter===f?'bg-[#20419A] text-white':'bg-[#F7F2F9] text-[#474550] hover:bg-[#E5E1E8]'}">${f}</button>`).join('')}
+       </div>
+     </div>
+-    <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(83,74,146,0.06)] overflow-hidden">
++    <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(32,65,154,0.06)] overflow-hidden">
+       ${adminBookingRows(filtered)}
+     </div>
+   </div>`;
+@@ -1224,22 +1224,22 @@ function renderAdminFacilities() {
+         <h2 class="text-2xl font-black text-[#1c1b20]">Facilities Overview</h2>
+         <p class="text-sm text-[#787581] mt-1">${all.length} facilities managed</p>
+       </div>
+-      <button onclick="openAddFacilityModal()" class="flex items-center gap-2 bg-gradient-to-br from-[#534A92] to-[#6C63AC] text-white px-5 py-2.5 rounded-full font-black text-sm shadow-lg hover:brightness-110 transition-all">
++      <button onclick="openAddFacilityModal()" class="flex items-center gap-2 bg-gradient-to-br from-[#20419A] to-[#2B54C2] text-white px-5 py-2.5 rounded-full font-black text-sm shadow-lg hover:brightness-110 transition-all">
+         <span class="material-symbols-outlined text-lg">add</span> Add Facility
+       </button>
+     </div>
+     <div class="space-y-4">
+       ${all.map(f=>`
+-      <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(83,74,146,0.06)] overflow-hidden">
++      <div class="bg-white rounded-2xl shadow-[0px_4px_16px_rgba(32,65,154,0.06)] overflow-hidden">
+         <!-- Facility Header Row -->
+         <div class="p-5 flex items-start gap-4">
+           <div class="w-11 h-11 bg-[#F7F2F9] rounded-xl flex items-center justify-center flex-shrink-0">
+-            <span class="material-symbols-outlined text-[#6C63AC] text-xl">${getFacilityIcon(f)}</span>
++            <span class="material-symbols-outlined text-[#2B54C2] text-xl">${getFacilityIcon(f)}</span>
+           </div>
+           <div class="flex-1 min-w-0">
+             <div class="flex items-center gap-2 flex-wrap">
+               <p class="font-black text-[#1c1b20] text-sm">${f.name}</p>
+-              <span class="text-[9px] font-black text-[#534A92] bg-[#e5deff] px-2 py-0.5 rounded-full uppercase tracking-wide">${f.room}</span>
++              <span class="text-[9px] font-black text-[#20419A] bg-[#BCCEFF] px-2 py-0.5 rounded-full uppercase tracking-wide">${f.room}</span>
+               <span class="text-[9px] font-black text-[#787581] bg-[#F7F2F9] px-2 py-0.5 rounded-full uppercase tracking-wide">${f.typeName}</span>
+               ${f.capacity?`<span class="text-[9px] font-semibold text-[#787581] flex items-center gap-0.5"><span class="material-symbols-outlined" style="font-size:11px">groups</span>${f.capacity} cap.</span>`:''}
+             </div>
+@@ -1252,10 +1252,10 @@ function renderAdminFacilities() {
+           </div>
+           <div class="flex items-center gap-2 flex-shrink-0">
+             ${f.available===false?`<span class="text-[9px] font-black text-red-500 bg-red-100 px-2 py-1 rounded-full uppercase">Unavailable</span>`:`<span class="text-[9px] font-black text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full uppercase">Available</span>`}
+-            <button onclick="openViewSlotsPanel('${f.id}')" class="w-8 h-8 rounded-xl bg-[#e5deff] hover:bg-[#6C63AC] hover:text-white text-[#534A92] flex items-center justify-center transition-all" title="View / Select Slots">
++            <button onclick="openViewSlotsPanel('${f.id}')" class="w-8 h-8 rounded-xl bg-[#BCCEFF] hover:bg-[#2B54C2] hover:text-white text-[#20419A] flex items-center justify-center transition-all" title="View / Select Slots">
+               <span class="material-symbols-outlined text-sm">calendar_view_week</span>
+             </button>
+-            <button onclick="openEditFacilityModal('${f.id}')" class="w-8 h-8 rounded-xl bg-[#F7F2F9] hover:bg-[#534A92] hover:text-white text-[#474550] flex items-center justify-center transition-all" title="Edit">
++            <button onclick="openEditFacilityModal('${f.id}')" class="w-8 h-8 rounded-xl bg-[#F7F2F9] hover:bg-[#20419A] hover:text-white text-[#474550] flex items-center justify-center transition-all" title="Edit">
+               <span class="material-symbols-outlined text-sm">edit</span>
+             </button>
+             <button onclick="deleteFacility('${f.id}')" class="w-8 h-8 rounded-xl bg-red-50 hover:bg-red-500 hover:text-white text-red-400 flex items-center justify-center transition-all" title="Delete">
+@@ -1292,7 +1292,7 @@ function buildAdminSlotPanel(f) {
+       <div class="flex items-center gap-2">
+         <input type="date" value="${adminSlotDate}" onchange="adminSlotDate=this.value;refreshAdminSlotPanel('${f.id}')" class="bg-white rounded-xl px-3 py-2 text-xs font-bold text-[#1c1b20] border-2 border-[#e5e1e8] transition-all"/>
+         <button onclick="clearAdminSlots('${f.id}')" class="px-3 py-2 rounded-xl bg-white text-[#787581] font-bold text-xs hover:bg-[#e5e1e8] transition-all border border-[#e5e1e8]">Clear</button>
+-        <button onclick="confirmAdminSlotBlock('${f.id}')" class="px-4 py-2 rounded-xl bg-[#534A92] text-white font-black text-xs hover:brightness-110 transition-all flex items-center gap-1">
++        <button onclick="confirmAdminSlotBlock('${f.id}')" class="px-4 py-2 rounded-xl bg-[#20419A] text-white font-black text-xs hover:brightness-110 transition-all flex items-center gap-1">
+           <span class="material-symbols-outlined" style="font-size:13px">block</span>Block Selected
+         </button>
+       </div>
+@@ -1300,7 +1300,7 @@ function buildAdminSlotPanel(f) {
+     <div id="admin-tt-${f.id}" style="overflow-x:auto">
+       ${buildAdminTimetableHTML(f.id, adminSlotDate)}
+     </div>
+-    <div id="slot-selection-summary-${f.id}" class="mt-3 text-xs font-semibold text-[#534A92]"></div>
++    <div id="slot-selection-summary-${f.id}" class="mt-3 text-xs font-semibold text-[#20419A]"></div>
+   </div>`;
+ }
+ 
+@@ -1316,8 +1316,8 @@ function buildAdminTimetableHTML(facilityId, dateStr) {
+         const isSelected = d===dateStr;
+         const dateObj = new Date(d+'T00:00:00');
+         return `<th style="text-align:center;padding:4px 2px;min-width:68px">
+-          <div style="font-size:10px;font-weight:800;color:${isSelected?'#534A92':'#787581'};text-transform:uppercase">${DAY_LABELS[i]}</div>
+-          <div style="font-size:11px;font-weight:900;color:${isSelected?'#534A92':'#1c1b20'};background:${isSelected?'#e5deff':'transparent'};border-radius:6px;padding:2px 4px">
++          <div style="font-size:10px;font-weight:800;color:${isSelected?'#20419A':'#787581'};text-transform:uppercase">${DAY_LABELS[i]}</div>
++          <div style="font-size:11px;font-weight:900;color:${isSelected?'#20419A':'#1c1b20'};background:${isSelected?'#BCCEFF':'transparent'};border-radius:6px;padding:2px 4px">
+             ${dateObj.getDate()} ${dateObj.toLocaleDateString('en-IN',{month:'short'})}
+           </div>
+         </th>`;
+@@ -1418,7 +1418,7 @@ function openAddFacilityModal(existingId) {
+   document.getElementById('modal-overlay').innerHTML = `
+   <div class="fixed inset-0 bg-[#1C1B20]/70 backdrop-blur-sm flex items-center justify-center p-4 fade-in" onclick="handleOverlayClick(event)">
+     <div class="bg-[#FCF8FF] rounded-3xl shadow-2xl w-full max-w-2xl scale-in overflow-hidden flex flex-col" style="max-height:92vh" onclick="event.stopPropagation()">
+-      <div class="bg-gradient-to-br from-[#534A92] to-[#6C63AC] p-6 text-white flex-shrink-0">
++      <div class="bg-gradient-to-br from-[#20419A] to-[#2B54C2] p-6 text-white flex-shrink-0">
+         <div class="flex justify-between items-center">
+           <div>
+             <h2 class="text-xl font-black">${isEdit?'Edit Facility':'Add New Facility'}</h2>
+@@ -1465,7 +1465,7 @@ function openAddFacilityModal(existingId) {
+         <div>
+           <label class="block text-xs font-bold text-[#474550] uppercase tracking-wide mb-2">Venue Image</label>
+           <div class="flex gap-2 mb-3">
+-            <button type="button" id="img-tab-url" onclick="switchImgTab('url')" class="px-4 py-2 rounded-full text-xs font-black transition-all bg-[#534A92] text-white">Image URL</button>
++            <button type="button" id="img-tab-url" onclick="switchImgTab('url')" class="px-4 py-2 rounded-full text-xs font-black transition-all bg-[#20419A] text-white">Image URL</button>
+             <button type="button" id="img-tab-upload" onclick="switchImgTab('upload')" class="px-4 py-2 rounded-full text-xs font-black transition-all bg-[#E5E1E8] text-[#474550]">Upload File</button>
+           </div>
+           <!-- URL tab -->
+@@ -1474,7 +1474,7 @@ function openAddFacilityModal(existingId) {
+           </div>
+           <!-- Upload tab -->
+           <div id="img-panel-upload" class="hidden">
+-            <div class="border-2 border-dashed border-[#c9c4d2] rounded-2xl p-6 text-center bg-white hover:border-[#6C63AC] transition-colors cursor-pointer" onclick="document.getElementById('af-image-file').click()">
++            <div class="border-2 border-dashed border-[#c9c4d2] rounded-2xl p-6 text-center bg-white hover:border-[#2B54C2] transition-colors cursor-pointer" onclick="document.getElementById('af-image-file').click()">
+               <span class="material-symbols-outlined text-[#c9c4d2] text-3xl block mb-2">cloud_upload</span>
+               <p class="text-sm font-bold text-[#474550]">Click to upload or drag & drop</p>
+               <p class="text-xs text-[#787581] mt-1">JPG, JPEG, PNG, WEBP · Max 5 MB · Recommended: 1280×720px or larger</p>
+@@ -1496,7 +1496,7 @@ function openAddFacilityModal(existingId) {
+         <div class="flex items-center gap-3">
+           <label class="text-xs font-bold text-[#474550] uppercase tracking-wide">Availability</label>
+           <label class="flex items-center gap-2 cursor-pointer">
+-            <input id="af-available" type="checkbox" ${existing?.available===false?'':'checked'} class="w-4 h-4 rounded accent-[#534A92]"/>
++            <input id="af-available" type="checkbox" ${existing?.available===false?'':'checked'} class="w-4 h-4 rounded accent-[#20419A]"/>
+             <span class="text-sm font-semibold text-[#1c1b20]">Available for booking</span>
+           </label>
+         </div>
+@@ -1507,7 +1507,7 @@ function openAddFacilityModal(existingId) {
+           <div class="grid grid-cols-4 gap-2" id="amenity-grid">
+             ${AMENITY_OPTIONS.map(a=>`
+             <button type="button" id="am-${a.id}" onclick="toggleAmenity('${a.id}')"
+-              class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all text-center amenity-btn ${selAmenities.has(a.id)?'border-[#6C63AC] bg-[#e5deff] text-[#534A92]':'border-[#e5e1e8] bg-white text-[#787581] hover:border-[#c9c4d2]'}">
++              class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all text-center amenity-btn ${selAmenities.has(a.id)?'border-[#2B54C2] bg-[#BCCEFF] text-[#20419A]':'border-[#e5e1e8] bg-white text-[#787581] hover:border-[#c9c4d2]'}">
+               <span class="material-symbols-outlined text-lg">${a.icon}</span>
+               <span class="text-[10px] font-bold leading-tight">${a.label}</span>
+             </button>`).join('')}
+@@ -1516,7 +1516,7 @@ function openAddFacilityModal(existingId) {
+       </div>
+       <div class="p-6 pt-4 flex gap-3 flex-shrink-0 border-t border-[#E5E1E8]">
+         <button onclick="closeModal()" class="flex-1 py-3 rounded-full bg-[#E5E1E8] text-[#474550] font-bold text-sm hover:bg-[#c9c4d2] transition-colors">Cancel</button>
+-        <button onclick="saveFacility(${isEdit?`'${existingId}'`:'null'})" class="flex-1 py-3 rounded-full bg-gradient-to-br from-[#534A92] to-[#6C63AC] text-white font-black text-sm shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2">
++        <button onclick="saveFacility(${isEdit?`'${existingId}'`:'null'})" class="flex-1 py-3 rounded-full bg-gradient-to-br from-[#20419A] to-[#2B54C2] text-white font-black text-sm shadow-lg hover:brightness-110 transition-all flex items-center justify-center gap-2">
+           <span class="material-symbols-outlined text-sm">${isEdit?'save':'add_circle'}</span> ${isEdit?'Save Changes':'Add Facility'}
+         </button>
+       </div>
+@@ -1532,11 +1532,11 @@ function switchImgTab(tab) {
+   const uploadBtn = document.getElementById('img-tab-upload');
+   if(tab==='url') {
+     urlPanel.classList.remove('hidden'); uploadPanel.classList.add('hidden');
+-    urlBtn.className='px-4 py-2 rounded-full text-xs font-black transition-all bg-[#534A92] text-white';
++    urlBtn.className='px-4 py-2 rounded-full text-xs font-black transition-all bg-[#20419A] text-white';
+     uploadBtn.className='px-4 py-2 rounded-full text-xs font-black transition-all bg-[#E5E1E8] text-[#474550]';
+   } else {
+     urlPanel.classList.add('hidden'); uploadPanel.classList.remove('hidden');
+-    uploadBtn.className='px-4 py-2 rounded-full text-xs font-black transition-all bg-[#534A92] text-white';
++    uploadBtn.className='px-4 py-2 rounded-full text-xs font-black transition-all bg-[#20419A] text-white';
+     urlBtn.className='px-4 py-2 rounded-full text-xs font-black transition-all bg-[#E5E1E8] text-[#474550]';
+   }
+ }
+@@ -1585,11 +1585,11 @@ function toggleAmenity(id) {
+   const btn = document.getElementById('am-'+id);
+   if(window._editAmenities.has(id)) {
+     window._editAmenities.delete(id);
+-    btn.classList.remove('border-[#6C63AC]','bg-[#e5deff]','text-[#534A92]');
++    btn.classList.remove('border-[#2B54C2]','bg-[#BCCEFF]','text-[#20419A]');
+     btn.classList.add('border-[#e5e1e8]','bg-white','text-[#787581]','hover:border-[#c9c4d2]');
+   } else {
+     window._editAmenities.add(id);
+-    btn.classList.add('border-[#6C63AC]','bg-[#e5deff]','text-[#534A92]');
++    btn.classList.add('border-[#2B54C2]','bg-[#BCCEFF]','text-[#20419A]');
+     btn.classList.remove('border-[#e5e1e8]','bg-white','text-[#787581]','hover:border-[#c9c4d2]');
+   }
+ }
+@@ -1683,7 +1683,7 @@ function render() {
+           <h1 class="text-xl font-black text-white">${topTitles[currentPage]||'Admin'}</h1>
+           <div class="flex items-center gap-3">
+             <span class="text-xs text-white/40 font-bold uppercase tracking-wider">${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span>
+-            <div class="w-9 h-9 bg-[#534A92] rounded-full flex items-center justify-center">
++            <div class="w-9 h-9 bg-[#20419A] rounded-full flex items-center justify-center">
+               <span class="material-symbols-outlined text-white text-lg">admin_panel_settings</span>
+             </div>
+           </div>
+diff --git a/styles.css b/styles.css
+index 98f908c..cac0ed0 100644
+--- a/styles.css
++++ b/styles.css
+@@ -14,10 +14,10 @@
+   .audi-card img { transition: transform 0.7s ease; }
+   .audi-card:hover img { transform: scale(1.08); }
+   .hall-card { transition: all 0.2s; }
+-  .hall-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(83,74,146,0.12); }
++  .hall-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(32,65,154,0.12); }
+   .nav-item { transition: all 0.15s; }
+   .nav-item:hover { transform: translateX(3px); }
+-  input:focus, textarea:focus, select:focus { outline: none; border-color: #6c63ac !important; box-shadow: 0 0 0 3px rgba(108,99,172,0.12) !important; }
++  input:focus, textarea:focus, select:focus { outline: none; border-color: #2B54C2 !important; box-shadow: 0 0 0 3px rgba(43,84,194,0.12) !important; }
+   .toast { animation: fadeUp 0.4s ease, fadeIn 0.4s ease; }
+   .quick-fab:hover .fab-label { opacity:1; transform:translateX(0); pointer-events:auto; }
+   .fab-label { opacity:0; transform:translateX(-10px); transition:all .25s; pointer-events:none; white-space:nowrap; }
+-- 
+2.43.0
+
