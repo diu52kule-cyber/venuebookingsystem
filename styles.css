@@ -14,10 +14,10 @@
   .audi-card img { transition: transform 0.7s ease; }
   .audi-card:hover img { transform: scale(1.08); }
   .hall-card { transition: all 0.2s; }
-  .hall-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(83,74,146,0.12); }
+  .hall-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(32,65,154,0.12); }
   .nav-item { transition: all 0.15s; }
   .nav-item:hover { transform: translateX(3px); }
-  input:focus, textarea:focus, select:focus { outline: none; border-color: #6c63ac !important; box-shadow: 0 0 0 3px rgba(108,99,172,0.12) !important; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: #2B54C2 !important; box-shadow: 0 0 0 3px rgba(43,84,194,0.12) !important; }
   .toast { animation: fadeUp 0.4s ease, fadeIn 0.4s ease; }
   .quick-fab:hover .fab-label { opacity:1; transform:translateX(0); pointer-events:auto; }
   .fab-label { opacity:0; transform:translateX(-10px); transition:all .25s; pointer-events:none; white-space:nowrap; }
